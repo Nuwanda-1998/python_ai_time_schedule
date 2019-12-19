@@ -25,4 +25,3 @@ b1= Main_DB()
 print(b1.lessons_time)
 
 # class Teacher_Time_Calc:
-
