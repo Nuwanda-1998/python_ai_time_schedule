@@ -26,3 +26,7 @@ print(b1.lessons_time)
 
 # class Teacher_Time_Calc:
 
+#example function
+def add(value):
+    return value+2
+
