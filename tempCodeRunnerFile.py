@@ -1,0 +1,1 @@
+print('i = {} and j = {}'.format(i, j))
