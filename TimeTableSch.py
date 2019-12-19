@@ -13,15 +13,22 @@ class Teacher_DB:
 class Main_DB:
     #Total number of classes
     physical_classes = 10
+    less_time = []
     def __init__(self):
         self.lessons_title = input('Enter the lessons name: ').split()
         print(self.lessons_title)
         self.lessons_time = input('Enter the lessons time req: ').split()
-        for conv in len(self.lessons_time):
-            print(type(conv))
-            print(conv)
+        #convert string to integer
+        for conv in range(len(self.lessons_time)):
+            self.lessons_time[conv] = int(self.lessons_time[conv])
+        #make tuples of lessons and needed time
+        for i in range(len(self.lessons_time)):
+            self.less_time.append([self.lessons_title[i], self.lessons_time[i]])
+        print('this is the tuples : {}'.format(self.less_time))
+    
 
-b1= Main_DB()
-print(b1.lessons_time)
 
-# class Teacher_Time_Calc:
+
+
+ class Teacher_Time_Calc:
+     
