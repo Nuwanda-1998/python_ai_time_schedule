@@ -45,6 +45,20 @@ class Main_DB:
         return self.teacher_and_lessons
     def get_all_total_time(self):
         return self.less_time
+    def set_each_lesson_time(self, th_dict):
+        self.each_lesson_time = th_dict
+    def set_each_lesson_time_predict(self, th_pr_list):
+        self.each_lesson_time_predict = th_pr_list
+    def set_all_predicted_time(self, th_pr_list):
+        self.total_predicted_time_list = th_pr_list
+    def get_each_lesson_time_predict(self):
+       return self.each_lesson_time_predict
+    def set_time_needed(self, tt):
+        self.time_needed = tt
+    def get_total_integer_time_needed(self, t_i_t):
+        self_total_time = t_i_t
+    def show_test(self):
+        print('total time needed is {} and each lesson time requierment is {}'.format(self.time_needed, self.each_lesson_time_predict))
 
         
     
@@ -59,11 +73,13 @@ class Teacher_Time_Calc:
     #def eachlesson_calc(self, db_lessAndTime_obj):
         self.all_list_teachers_and_lessons = db_lessAndTime_obj.get_all_teach_less()
         self.total_lessons_time = db_lessAndTime_obj.get_all_total_time()
+        self.main_database_object = db_lessAndTime_obj
         print('all list teacher is {} and the total lesson time is : {}  '.format(self.all_list_teachers_and_lessons, self.total_lessons_time))
     
     def each_lesson_calc(self):
         #this will save the each lesson time requierd for each teacher
         each_lesson_time_needed = []
+        just_time = []
         #this value will storeall teachers lessons
         lessons_a = []
         #this loop will count the number of teachers that can teach each lesson
@@ -71,6 +87,7 @@ class Teacher_Time_Calc:
             lessons_a.extend(self.all_list_teachers_and_lessons[i][1])
         #this value will store the dict of the number of teachers that can teach each lesson
         number_teachers_cteach = dict(Counter(lessons_a))
+        self.main_database_object.set_each_lesson_time(number_teachers_cteach)
         #this loop will predict the what time each lesson takes from the teacher that are trying to teach it
         for c in range(len(self.total_lessons_time)):
             search_key = self.total_lessons_time[c][0]
@@ -78,9 +95,18 @@ class Teacher_Time_Calc:
             if search_key in number_teachers_cteach.keys():
                 devider_um = math.ceil(search_value / number_teachers_cteach[search_key])
                 each_lesson_time_needed.append([search_key, devider_um])
+                just_time.append(devider_um)        
+        self.main_database_object.set_each_lesson_time_predict(each_lesson_time_needed)
+        self.main_database_object.set_all_predicted_time(just_time)
         print('this is each lesson time needed{}'.format(each_lesson_time_needed))
                 
-                    
+    def total_time_needed_calculator(self):
+        for counter in self.main_database_object.get_all_total_time:
+            self.totaliti = (self.totaliti)+counter
+        
+
+class Which_day_to_assign:
+    
 
 
 
@@ -90,4 +116,5 @@ b1 = Teacher_DB(b0)
 b2 = Teacher_DB(b0)
 b2 = Teacher_Time_Calc(b0)
 b2.each_lesson_calc()
+b0.show_test()
 
