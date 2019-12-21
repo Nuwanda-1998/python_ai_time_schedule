@@ -55,11 +55,19 @@ class Main_DB:
        return self.each_lesson_time_predict
     def set_time_needed(self, tt):
         self.time_needed = tt
-    def get_total_integer_time_needed(self, t_i_t):
-        self_total_time = t_i_t
+    def set_total_integer_time_needed(self, t_i_t):
+        self.total_time = t_i_t
+    def get_total_integer_time_needed(self):
+        return self.total_time
     def show_test(self):
         print('total time needed is {} and each lesson time requierment is {}'.format(self.time_needed, self.each_lesson_time_predict))
-
+    def get_teachers_and_lessons(self):
+        return self.teacher_and_lessons
+    #this function will store the main matrix for each day in week
+    def days_matrix_setter(self, weeks_m):
+        self.weeks_day_matrix = weeks_m
+    def get_total_lesson_and_time_req(self):
+        return self.less_time
         
     
 
@@ -101,12 +109,48 @@ class Teacher_Time_Calc:
         print('this is each lesson time needed{}'.format(each_lesson_time_needed))
                 
     def total_time_needed_calculator(self):
-        for counter in self.main_database_object.get_all_total_time:
-            self.totaliti = (self.totaliti)+counter
+        totalliti = 0
+        for counter in self.main_database_object.get_all_total_time():
+            totalliti = totalliti + counter[1]
+        self.main_database_object.set_total_integer_time_needed(totalliti)
         
 
 class Which_day_to_assign:
+    #this variable will store the matrix of each tday
+
+    def __init__ (self,db_obj):
+        self.matrix = [[[0,'none', 'teacher1', 'teacher2'] for i in range(5)]for j in range(10)]
+        self.mon = self.matrix.copy()
+        self.tue = self.matrix.copy()
+        self.wed = self.matrix.copy()
+        self.thur = self.matrix.copy()
+        self.fri = self.matrix.copy()
+        self.main_database_object = db_obj
+    #this func will create matrix for each day
+    def days_setter(self):
+        week_work_days_matrix = []
+        week_work_days_matrix.append(self.mon)
+        week_work_days_matrix.append(self.tue)
+        week_work_days_matrix.append(self.wed)
+        week_work_days_matrix.append(self.thur)
+        week_work_days_matrix.append(self.fri)
+        self.main_database_object.days_matrix_setter(week_work_days_matrix)
+    def backtraking_and_forwardchecking(self):
+        #this is the maximum time req for each lesson
+        list_of_lessons_and_max_time = self.main_database_object.get_each_lesson_time_predict()
+        #this the list of teachers and lessons than can be tought
+        list_of_teachers_and_lessons = self.main_database_object.get_all_teach_less()
+        #this is the total hours of lessons that needed
+        list_of_lessons_and_req_time = self.main_database_object.get_total_lesson_and_time_req()
+        #it will be save the total hours needed
+        max_total_time_needed = self.main_database_object.get_total_integer_time_needed()
+        print('the list of lessons and max time is {} and the list of teachers and lessons is : {} and the list of llessons time requierd is {} and finally the max total time needed is : {}'.format(list_of_lessons_and_max_time, list_of_teachers_and_lessons, list_of_lessons_and_req_time, max_total_time_needed))
+
+
+
     
+        
+
 
 
 
@@ -116,5 +160,17 @@ b1 = Teacher_DB(b0)
 b2 = Teacher_DB(b0)
 b2 = Teacher_Time_Calc(b0)
 b2.each_lesson_calc()
-b0.show_test()
+b2.total_time_needed_calculator()
+b3 = Which_day_to_assign(b0)
+b3.backtraking_and_forwardchecking()
 
+
+
+#matrix = [[['teacher1', 'teacher2'] for i in range(5)]for j in range(10)]
+# matrix = [[[0,'none', 'teacher1', 'teacher2'] for i in range(5)]for j in range(10)]
+# for i in range(len(matrix)):
+#     for j in range(5):
+#         print(matrix[i][j], end='')
+#     print('')
+
+    
