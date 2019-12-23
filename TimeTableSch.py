@@ -376,8 +376,10 @@ class Which_day_to_assign:
 
 
 
-    
-        
+        #functional style coding guide ->:
+        #dont use FOR in your code as possible : use MAP and FILTER Instead
+        #use Immutability 
+        #use Lamda functions and HOF 
 
 
 
